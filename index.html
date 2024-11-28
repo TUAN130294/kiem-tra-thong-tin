@@ -21,8 +21,8 @@
       var userId = document.getElementById('userid').value;
       var password = document.getElementById('password').value;
       
-      // Gửi yêu cầu POST đến Apps Script
-      fetch('https://script.google.com/macros/s/AKfycbwEaZQX1DAErpVXRN1NJwO2pX0z5t1lgWQl6zA7cPm5OYx6Gn_iMxbXKuxBPM2sY1xk/exec', { // Thay YOUR_APPS_SCRIPT_URL bằng URL của Apps Script
+      // Gửi yêu cầu POST đến Google Apps Script
+      fetch('https://script.google.com/macros/s/AKfycbx4piVyxquEa8lyP1NYszJWJiuJhAQcDRbwxVIK5cn2sBg5JPpmAPaeNsekyV3yS9oK/exec', { 
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -31,45 +31,39 @@
       })
       .then(response => response.json())
       .then(data => {
-        // Hiển thị kết quả
         var resultDiv = document.getElementById('result');
         resultDiv.innerHTML = ''; // Xóa kết quả cũ
-
         if (data.status === 'success') {
-          // Tạo bảng HTML để hiển thị data.userData
-          data.userData.forEach(function (rowData) {
-            var table = document.createElement('table');
-            table.classList.add('user-table'); // Thêm class cho bảng
-            var headerRow = table.insertRow();
-            var headers = ["User ID", "Nama", "Shop ID", "Shop Name", "Tanggal", "Target", "Pencapaian", "Rata-rata", "Jumlah Hari", "Bonus", "Insentif", "Total"];
-            headers.forEach(headerText => {
-              var headerCell = headerRow.insertCell();
-              headerCell.textContent = headerText;
-            });
-
-            var dataRow = table.insertRow();
-            rowData.forEach((cellData, index) => {
-              if (index !== 1) { // Bỏ qua cột Password
-                var cell = dataRow.insertCell();
-                var value = cellData;
-                if (index >= 3 && index <= 14 || index === 17) {
-                  // Định dạng số cho cột 3 đến 14 và 17
-                  value = Math.round(value).toLocaleString('en-US'); // Làm tròn và thêm dấu phân cách hàng nghìn
-                } else if (index === 16) {
-                  // Chuyển đổi cột 16 thành phần trăm và làm tròn đến 2 chữ số thập phân
-                  value = `${(value * 100).toFixed(2)}%`;
-                }
-                cell.textContent = value;
-              }
-            });
-            resultDiv.appendChild(table);
+          // Hiển thị thông tin người dùng
+          var table = document.createElement('table');
+          table.classList.add('user-table');
+          var headerRow = table.insertRow();
+          var headers = ["User ID", "Nama", "Shop ID", "Shop Name", "Tanggal", "Target", "Pencapaian", "Rata-rata", "Jumlah Hari", "Bonus", "Insentif", "Total"];
+          headers.forEach(headerText => {
+            var headerCell = headerRow.insertCell();
+            headerCell.textContent = headerText;
           });
+
+          var dataRow = table.insertRow();
+          data.userData.forEach((cellData, index) => {
+            if (index !== 1) { // Bỏ qua cột Password
+              var cell = dataRow.insertCell();
+              var value = cellData;
+              if (index >= 3 && index <= 14 || index === 17) {
+                value = Math.round(value).toLocaleString('en-US'); // Làm tròn và thêm dấu phân cách hàng nghìn
+              } else if (index === 16) {
+                value = `${(value * 100).toFixed(2)}%`; // Chuyển thành phần trăm
+              }
+              cell.textContent = value;
+            }
+          });
+          resultDiv.appendChild(table);
         } else {
-          resultDiv.textContent = data.message; 
+          resultDiv.textContent = data.message;
         }
       })
       .catch(error => {
-        console.error('Error:', error);
+        console.error('Lỗi:', error);
         var resultDiv = document.getElementById('result');
         resultDiv.innerHTML = ''; 
         resultDiv.textContent = "An error occurred. Please try again later.";
