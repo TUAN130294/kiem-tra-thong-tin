@@ -32,7 +32,12 @@
         },
         body: JSON.stringify({ userid: userId, password: password })
       })
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Server error or invalid response');
+        }
+        return response.json();
+      })
       .then(data => {
         var resultDiv = document.getElementById('result');
         resultDiv.innerHTML = ''; // Xóa kết quả cũ
@@ -69,7 +74,7 @@
         console.error('Lỗi:', error);
         var resultDiv = document.getElementById('result');
         resultDiv.innerHTML = ''; 
-        resultDiv.textContent = "An error occurred. Please try again later.";
+        resultDiv.textContent = "Đã có lỗi xảy ra. Vui lòng thử lại sau.";
       });
     });
   </script>
